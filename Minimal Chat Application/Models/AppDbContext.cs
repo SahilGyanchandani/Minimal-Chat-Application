@@ -12,6 +12,7 @@ namespace Minimal_Chat_Application.Models
         }
         public DbSet<UserRegistration> UserRegistrations { get; set; }
         public DbSet<Message> Messages { get; set; }
+        public DbSet<RequestLog> RequestLogs { get; set; }
 
 
     }

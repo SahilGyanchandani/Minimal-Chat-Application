@@ -28,7 +28,7 @@ namespace Minimal_Chat_Application.Controllers
           
             var messages=await _Context.Messages
                 .Where(m => (m.UserID == userId || m.ReceiverID== userId)
-                && (before == null || m.Timestamp<before))
+                && (before == null || m.Timestamp<before))                                                                                                                                                              
                 .OrderBy(m =>m.Timestamp)
                 .ToListAsync();
 
@@ -54,6 +54,7 @@ namespace Minimal_Chat_Application.Controllers
                 content = m.Content,
                 timestamp = m.Timestamp
             });
+
 
             return Ok(new {messages=response});
         }
@@ -167,14 +168,9 @@ namespace Minimal_Chat_Application.Controllers
 
             return emailClaim?.Value;
         }
-        //private int GetAuthenticatedUserId()
-        //{
-        //    var userIdClaim = User.Claims.FirstOrDefault(c => c.Type == ClaimTypes.NameIdentifier);
-        //    int.TryParse(userIdClaim?.Value, out int userId);
-        //    return userId;
-        //}
-
        
-        
+
+
+
     }
 }
