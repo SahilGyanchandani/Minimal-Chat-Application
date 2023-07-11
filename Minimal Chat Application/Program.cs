@@ -111,6 +111,7 @@ internal class Program
 
         app.UseAuthorization();
 
+        app.UseRequestLoggingMiddleware();
 
         app.MapControllers();
 

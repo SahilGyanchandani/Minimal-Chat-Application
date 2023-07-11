@@ -11,7 +11,7 @@ using Minimal_Chat_Application.Models;
 namespace Minimal_Chat_Application.Migrations
 {
     [DbContext(typeof(AppDbContext))]
-    [Migration("20230711050352_Initial")]
+    [Migration("20230711061756_Initial")]
     partial class Initial
     {
         /// <inheritdoc />

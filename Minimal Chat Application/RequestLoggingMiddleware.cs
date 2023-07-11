@@ -13,56 +13,34 @@ using Microsoft.Extensions.Logging;
 using System;
 using System.IO;
 using System.IdentityModel.Tokens.Jwt;
+using System.Net.Http;
 
 namespace Minimal_Chat_Application
 {
     public class RequestLoggingMiddleware
     {
         private readonly RequestDelegate _next;
-        private readonly ILogger<RequestLoggingMiddleware> _logger;
+        private readonly ILogger _logger;
 
-        public RequestLoggingMiddleware(RequestDelegate next, ILogger<RequestLoggingMiddleware> logger)
+        public RequestLoggingMiddleware(RequestDelegate next, ILoggerFactory logger)
         {
             _next = next;
-            _logger = logger;
+            _logger = logger.CreateLogger("Custom");
         }
 
-        public async Task InvokeAsync(HttpContext context, AppDbContext dbContext)
+        public async Task Invoke(HttpContext context)
         {
-            var ipAddress = context.Connection.RemoteIpAddress?.ToString();
-            var timeOfCall = DateTime.Now;
-
-            // Fetch email from auth token (you need to implement this logic)
-            var email = GetEmailFromAuthToken(context.User);
-
-            // Log the request
-            var logEntry = new RequestLog
+            var currentUser = context.User.FindFirst(ClaimTypes.Email);
+            if (currentUser == null)
             {
-                IpAddress = ipAddress,
-                Email = email,
-                Timestamp = timeOfCall
-            };
-
-            dbContext.RequestLogs.Add(logEntry);
-            await dbContext.SaveChangesAsync();
-
+                _logger.LogInformation(" Custom");
+            }
+            var userEmailDetail = currentUser?.Value;
+            _logger.LogInformation($"User Email: {userEmailDetail}");
+            
             await _next(context);
         }
-
-        //private async Task<string> ReadRequestBody(HttpRequest request)
-        //{
-        //    request.EnableBuffering();
-        //    using var reader = new StreamReader(request.Body, leaveOpen: true);
-        //    var body = await reader.ReadToEndAsync();
-        //    request.Body.Position = 0; // Reset the position so the request can be read again
-        //    return body;
-        //}
-
-        private string GetEmailFromAuthToken(ClaimsPrincipal user)
-        {
-            var emailClaim = user.Claims.FirstOrDefault(claim => claim.Type == ClaimTypes.Email)?.Value;
-            return emailClaim;
-        }
+      
     }
 
 
