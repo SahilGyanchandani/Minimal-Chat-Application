@@ -78,12 +78,35 @@ internal class Program
         {
             LoggerConfig.ReadFrom.Configuration(hostingContext.Configuration);
         });
+        //builder.Services.AddCors(options =>
+        //{
+        //    options.AddDefaultPolicy(
+        //    policy =>
+        //    {
+        //        policy.AllowAnyHeader().WithOrigins("https://localhost:4200", "http://localhost:4200").AllowAnyMethod();
+        //    });
+        //});
 
-        builder.Services.AddCors(options => options.AddPolicy(name: "NgOrigins",
-            policy =>
-            {
-                policy.WithOrigins("http://localhost:4200").AllowAnyMethod().AllowAnyHeader();
-            }));
+        //builder.Services.AddCors(option =>
+        //{
+        //    option.AddPolicy("MyPolicy", builder =>
+        //    {
+        //        builder.AllowAnyOrigin()
+        //        .AllowAnyMethod()
+        //        .AllowAnyHeader();
+        //    });
+        //});
+
+        builder.Services.AddCors(
+            options => { 
+                options.AddPolicy("AllowAll", 
+                    policy => { 
+                        policy.WithOrigins("http://localhost:4200")
+                    .AllowAnyMethod()
+                    .AllowAnyHeader()
+                    .AllowCredentials(); 
+                    }); 
+            });
 
 
 
@@ -111,6 +134,7 @@ internal class Program
 
         app.UseAuthorization();
 
+        app.UseCors("AllowAll");
         app.UseRequestLoggingMiddleware();
 
         app.MapControllers();

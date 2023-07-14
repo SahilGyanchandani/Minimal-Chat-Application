@@ -1,9 +1,11 @@
 ﻿using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Cors;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.IdentityModel.Tokens;
 using Minimal_Chat_Application.Models;
+using Minimal_Chat_Application.ParameterModels;
 //using Minimal_Chat_Application.Models.UserRegistration;
 using Minimal_Chat_Application.PasswordFunction;
 using Org.BouncyCastle.Utilities;
@@ -37,13 +39,14 @@ namespace Minimal_Chat_Application.Controllers
         
 
         [HttpPost]
-        public async Task<IActionResult> userlogin(string Email, string Password)
+   
+        public async Task<IActionResult> userlogin([FromBody] UserLogin userLogin)
         {
-            if (Email == null && Password == null)
+            if (userLogin.Email == null && userLogin.Password == null)
             {
                 return BadRequest();
             }
-            var user = await _Context.UserRegistrations.FirstOrDefaultAsync(ul => ul.Email == Email);
+            var user = await _Context.UserRegistrations.FirstOrDefaultAsync(ul => ul.Email == userLogin.Email);
 
 
             if (user == null)
@@ -51,13 +54,13 @@ namespace Minimal_Chat_Application.Controllers
                 return NotFound("User Not Found");
             }
 
-            if (!PasswordHash.VerifyPassword(Password, user.Password))
+            if (!PasswordHash.VerifyPassword(userLogin.Password, user.Password))
             {
                 return BadRequest("Password is Incorrect");
             }
 
             string token = CreateToken(user);
-            return Ok(token);
+            return Ok(new {token= token});
         }
         private string CreateToken(UserRegistration user)
         {

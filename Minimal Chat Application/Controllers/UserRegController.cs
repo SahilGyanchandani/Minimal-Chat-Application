@@ -3,6 +3,7 @@ using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using Minimal_Chat_Application.Models;
+using Minimal_Chat_Application.ParameterModels;
 using Minimal_Chat_Application.PasswordFunction;
 using Minimal_Chat_Application.Response_Models;
 
@@ -40,19 +41,19 @@ namespace Minimal_Chat_Application.Controllers
             return user;
         }
         [HttpPost]
-        public async Task<ActionResult> AddUser(string Name, string Email,string Password, string PhoneNumber)
+        public async Task<ActionResult> AddUser([FromBody] UserReg reg)
         {
-            if(await _Context.UserRegistrations.AnyAsync(ur=> ur.Email==Email))
+            if(await _Context.UserRegistrations.AnyAsync(ur=> ur.Email==reg.Email))
             {
                 return Conflict(new { error = "Email is Already Registred" });
             }
             var userRegistration = new UserRegistration
             {
-                Name = Name,
-                Email = Email,
-                Password = PasswordHash.HashPassword(Password),
+                Name = reg.Name,
+                Email = reg.Email,
+                Password = PasswordHash.HashPassword(reg.Password),
                 RegistrationDate = DateTime.Now.Date,
-                PhoneNumber=PhoneNumber,
+                PhoneNumber=reg.PhoneNumber,
                 IsActive=true
             };
 
