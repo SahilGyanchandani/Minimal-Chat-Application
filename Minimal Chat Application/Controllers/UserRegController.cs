@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Http;
+﻿using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
@@ -20,7 +21,7 @@ namespace Minimal_Chat_Application.Controllers
             _Context = dbContext;
         }
 
-        [HttpGet]
+        [HttpGet("GetUser"),Authorize]
         public async Task<ActionResult<IEnumerable<UserRegistration>>> GetUser()
         {
             if (_Context.UserRegistrations == null)
