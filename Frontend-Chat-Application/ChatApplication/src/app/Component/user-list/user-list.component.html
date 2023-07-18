@@ -18,28 +18,40 @@
     </div>
     <div class="message-container">
       <div *ngFor="let message of Msg" [ngClass]="{
-          'message-left': message.userId === selectedUserId,
-          'message-right': message.userId !== selectedUserId
-        }">
+        'message-left': message.userId === selectedUserId,
+        'message-right': message.userId !== selectedUserId
+      }">
         <div class="message-item" (contextmenu)="onMessageContextMenu($event, message)">
-          <div *ngIf="isMessageBeingEdited(message.id)">
-            <textarea [(ngModel)]="editedMessageContent" (keydown.enter)="acceptEdit(message.id, editedMessageContent)"
-              (keydown.escape)="declineEdit()" class="message-input-edit" placeholder="Edit your message..."></textarea>
-            <button class="edit-button" (click)="acceptEdit(message.id, editedMessageContent)">
-              Edit
-            </button>
-            <button class="context-button" (click)="onMessageDelete(message)">
-              Delete
-            </button>
-            <button class="edit-button" (click)="declineEdit()">Cancel</button>
+          <!-- Add the condition to check if the message is in 'message-right' class -->
+          <div *ngIf="message.userId !== selectedUserId">
+            <div *ngIf="isMessageBeingEdited(message.id)">
+              <textarea
+                [(ngModel)]="editedMessageContent"
+                (keydown.enter)="acceptEdit(message.id, editedMessageContent)"
+                (keydown.escape)="declineEdit()"
+                class="message-input-edit"
+                placeholder="Edit your message..."
+              ></textarea>
+              <button class="edit-button" (click)="acceptEdit(message.id, editedMessageContent)">
+                Edit
+              </button>
+              <button class="context-button" (click)="onMessageDelete(message)">
+                Delete
+              </button>
+              <button class="edit-button" (click)="declineEdit()">Cancel</button>
+            </div>
+            <div *ngIf="!isMessageBeingEdited(message.id)" class="message-content" (contextmenu)="editMessage(message.id)">
+              {{ message.content }}
+            </div>
           </div>
-          <div *ngIf="!isMessageBeingEdited(message.id)" class="message-content"
-            (contextmenu)="editMessage(message.id)">
+          <!-- If the message is in 'message-left' class, only show the message content -->
+          <div *ngIf="message.userId === selectedUserId" class="message-content">
             {{ message.content }}
           </div>
         </div>
       </div>
     </div>
+    
     <div class="send-message-container">
       <div class="input-group">
         <textarea [value]="newMessage" (input)="onMessageInput($event)" (keydown.enter)="sendMessage()"
