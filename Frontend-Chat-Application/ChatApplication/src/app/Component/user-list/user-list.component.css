@@ -1,0 +1,120 @@
+img{
+  height: 25px;
+  width: 25px;  
+}
+ul{
+    list-style: none;
+}
+
+.container {
+  display: flex; /* Use flexbox to arrange elements side by side */
+  height: 100vh; /* Set the height to take full viewport height */
+}
+
+.user-list {
+    height: 100%;
+    background-color: #f0f0f0;
+    padding: 16px;
+    border-right: 1px solid #ccc; /* Add a border between the two containers */
+    overflow-y: auto; /* Enable vertical scrolling if needed */
+  }
+  
+  .user-item {
+    display: flex;
+    align-items: center;
+    padding: 10px;
+    cursor: pointer;
+    border-bottom: 1px solid #ccc;
+    transition: background-color 0.3s ease; /* Add transition effect for hover */
+  }
+  
+  .user-item:hover {
+    background-color: #e7e5e5; /* Add background color on hover */
+  }
+  
+  .user-avatar {
+    margin-right: 10px;
+  }
+  
+  .user-avatar img {
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+    object-fit: cover;
+  }
+  
+  .user-name {
+    font-weight: bold;
+  }
+  
+  .user-list::-webkit-scrollbar {
+    width: 8px;
+  }
+  
+  .user-list::-webkit-scrollbar-track {
+    background-color: #f1f1f1;
+  }
+  
+  .user-list::-webkit-scrollbar-thumb {
+    background-color: #888;
+    border-radius: 4px;
+  }
+  
+  .user-list::-webkit-scrollbar-thumb:hover {
+    background-color: #555;
+  }
+
+  .conversation-history {
+    height: 100%;
+    background-color: #fff;
+    padding: 16px;
+    flex: 1; /* Allow this container to occupy remaining space */
+    overflow-y: auto; /* Enable vertical scrolling if needed */
+  }
+  
+  .message-content {
+    padding: 8px;
+    margin: 4px;
+    border-radius: 8px;
+    font-family: Arial, sans-serif;
+  }
+  
+  .message-right {
+    background-color: #dcf8c6; /* Light green color for sender's messages */
+    text-align: right;
+  }
+  
+  .message-left {
+    background-color: #f3f3f3; /* Light gray color for receiver's messages */
+    text-align: left;
+  }
+
+  .message-container {
+    display: flex;
+    flex-direction: column-reverse; /* Messages will start from the bottom */
+    overflow-y: auto; /* Enable vertical scrolling */
+    height: 82%;
+  }
+
+  .message-header {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background-color: #69e684; /* Green background color */
+    border: 1px solid #2e8540; /* Green border */
+    padding: 10px;
+    font-weight: bold; /* Make the text bold */
+    color: white; /* Text color white */
+  }
+
+  .message-item {
+    margin-bottom: 2px;
+    border: 1px solid #ccc; /* Border color and style */
+    border-radius: 8px; /* Rounded corners for the border */
+    padding: 8px; /* Add padding for a little space between border and content */
+  }
+
+  .message-input{
+    resize: none;
+    width: 90%;
+  }
