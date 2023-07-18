@@ -1,11 +1,7 @@
 <div class="container">
   <div class="user-list" style="width: 25%">
     <ul>
-      <li
-        *ngFor="let user of Users"
-        class="user-item"
-        (click)="getUserConversation(user)"
-      >
+      <li *ngFor="let user of Users" class="user-item" (click)="getUserConversation(user)">
         <div class="user-avatar">
           <img src="../../../assets/Images/user-avatar.png" alt="User Avatar" />
         </div>
@@ -21,29 +17,15 @@
       <div class="header-content">{{ getUserById(selectedUserId)?.name }}</div>
     </div>
     <div class="message-container">
-      <div
-        *ngFor="let message of Msg"
-        [ngClass]="{
+      <div *ngFor="let message of Msg" [ngClass]="{
           'message-left': message.userId === selectedUserId,
           'message-right': message.userId !== selectedUserId
-        }"
-      >
-        <div
-          class="message-item"
-          (contextmenu)="onMessageContextMenu($event, message)"
-        >
+        }">
+        <div class="message-item" (contextmenu)="onMessageContextMenu($event, message)">
           <div *ngIf="isMessageBeingEdited(message.id)">
-            <textarea
-              [(ngModel)]="editedMessageContent"
-              (keydown.enter)="acceptEdit(message.id, editedMessageContent)"
-              (keydown.escape)="declineEdit()"
-              class="message-input-edit"
-              placeholder="Edit your message..."
-            ></textarea>
-            <button
-              class="edit-button"
-              (click)="acceptEdit(message.id, editedMessageContent)"
-            >
+            <textarea [(ngModel)]="editedMessageContent" (keydown.enter)="acceptEdit(message.id, editedMessageContent)"
+              (keydown.escape)="declineEdit()" class="message-input-edit" placeholder="Edit your message..."></textarea>
+            <button class="edit-button" (click)="acceptEdit(message.id, editedMessageContent)">
               Edit
             </button>
             <button class="context-button" (click)="onMessageDelete(message)">
@@ -51,11 +33,8 @@
             </button>
             <button class="edit-button" (click)="declineEdit()">Cancel</button>
           </div>
-          <div
-            *ngIf="!isMessageBeingEdited(message.id)"
-            class="message-content"
-            (contextmenu)="editMessage(message.id)"
-          >
+          <div *ngIf="!isMessageBeingEdited(message.id)" class="message-content"
+            (contextmenu)="editMessage(message.id)">
             {{ message.content }}
           </div>
         </div>
@@ -63,13 +42,8 @@
     </div>
     <div class="send-message-container">
       <div class="input-group">
-        <textarea
-          [value]="newMessage"
-          (input)="onMessageInput($event)"
-          (keydown.enter)="sendMessage()"
-          class="message-input"
-          placeholder="Type your message..."
-        ></textarea>
+        <textarea [value]="newMessage" (input)="onMessageInput($event)" (keydown.enter)="sendMessage()"
+          class="message-input" placeholder="Type your message..."></textarea>
         <button class="btn btn-primary" (click)="sendMessage()">Send</button>
       </div>
     </div>

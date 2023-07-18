@@ -11,10 +11,8 @@ import { Message, MessageSend } from '../Models/message.model';
 export class LoginServiceService {
   constructor(private http: HttpClient) {}
 
-  onSubmit(obj: any): Observable<any> {
-    const headers = new HttpHeaders().set('content-type', 'application/json').set('Access-Control-Allow-Origin', 'https://localhost:7277/');
-    return this.http.post<any>('https://localhost:7277/api/UserLogin', obj, { headers , withCredentials:true});
-
+  onSubmit(obj: any):Observable<any> {
+    return this.http.post<any>('https://localhost:7277/api/UserLogin',obj);
   }
 
   onReg(userData : any):Observable<any>{

@@ -11,7 +11,6 @@ import { Router } from '@angular/router';
 
 @Injectable()
 export class CustomInterceptor implements HttpInterceptor {
-
   constructor(private router:Router) {}
 
   intercept(request: HttpRequest<unknown>, next: HttpHandler): Observable<HttpEvent<unknown>> {
@@ -26,12 +25,13 @@ export class CustomInterceptor implements HttpInterceptor {
       catchError((err : any)=>{
         if(err instanceof HttpErrorResponse){
           if(err.status === 401){
-            
+       
             console.warn("Token is expired, Please Login again")           
             this.router.navigateByUrl('/login')
           }
         }
-        return throwError(()=> new Error("Some other error occured") )
+        return throwError((err))
+        // return throwError(()=>this.errorMessage = err.error )
       })
     )
   }
