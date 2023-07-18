@@ -24,10 +24,16 @@ namespace Minimal_Chat_Application.Controllers
         [HttpGet,Authorize]
         public async Task<IActionResult> GetConversationHistory(int userId,DateTime? before =null,int count=20,string sort="asc")
         {
-            
-          
+            string currentEmail=GetCurrentEmail();
+            var sender= await _Context.UserRegistrations.FirstOrDefaultAsync(ur => ur.Email==currentEmail);
+            if (sender==null)
+            {
+                return Unauthorized();
+            }
+           
+
             var messages=await _Context.Messages
-                .Where(m => (m.UserID == userId || m.ReceiverID== userId)
+                .Where(m => (m.UserID == userId && m.ReceiverID==sender.UserID || (m.UserID==sender.UserID && m.ReceiverID==userId))
                 && (before == null || m.Timestamp<before))                                                                                                                                                              
                 .OrderBy(m =>m.Timestamp)
                 .ToListAsync();
